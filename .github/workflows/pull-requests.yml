@@ -1,0 +1,29 @@
+name: Build Azure Functions
+
+on:
+  push:
+    branches:
+      - '!main'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1
+
+    - name: build and package Azure Functions
+      run: |
+        dotnet restore
+        dotnet build -c Release
+        # dotnet test
+        dotnet publish -c Release -o dist
